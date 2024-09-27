@@ -9,6 +9,9 @@
 ```
 PS C:\Users\chiar> ipconfig
 
+
+
+
 [...]
 
 Carte réseau sans fil Wi-Fi :
