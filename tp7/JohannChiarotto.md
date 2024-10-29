@@ -176,8 +176,8 @@ traceroute to 1.1.1.1 (1.1.1.1), 30 hops max, 60 byte packets
 
 🌞 **Visitez le service Web à travers le VPN**
 
-Problème de configuartion dans un fichier.
+
 ```
-[johann@client1 ~]$ curl https://sitedefou.tp7.b1
-curl: (7) Failed to connect to sitedefou.tp7.b1 port 443: No route to host
+[johann@client1 ~]$ curl -k https://sitedefou.tp7.b1
+meow !
 ```
